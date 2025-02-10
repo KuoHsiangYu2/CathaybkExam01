@@ -1,0 +1,5 @@
+server.port=8080
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:tcp://localhost/C:/database_h2/demo01
+spring.datasource.username=<資料庫帳號>
+spring.datasource.password=<資料庫密碼>
