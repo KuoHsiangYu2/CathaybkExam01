@@ -17,6 +17,8 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ import com.hsiangyu.demo.service.ICathaybkService;
 
 @Service
 public class CathaybkServiceImpl implements ICathaybkService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CathaybkServiceImpl.class);
 
     /* 主資料表 */
     @Autowired
@@ -69,24 +73,28 @@ public class CathaybkServiceImpl implements ICathaybkService {
                 resultObject.setApiMessage("fetch coindesk API failure");
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.debug("fetch coindesk API failure");
+            logger.debug("ParseException Message {}", e.getMessage());
+            logger.debug("{}", e);
             resultObject.setApiMessage("fetch coindesk API failure");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.debug("fetch coindesk API failure");
+            logger.debug("IOException Message {}", e.getMessage());
+            logger.debug("{}", e);
             resultObject.setApiMessage("fetch coindesk API failure");
         } finally {
             if (closeableHttpResponse != null) {
                 try {
                     closeableHttpResponse.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.debug("{}", e);
                 }
             }
             if (closeableHttpClient != null) {
                 try {
                     closeableHttpClient.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.debug("{}", e);
                 }
             }
         }
@@ -96,10 +104,14 @@ public class CathaybkServiceImpl implements ICathaybkService {
         try {
             coinCurrencyDTORq = objectMapper.readValue(resultContent, CoinCurrencyDTORq.class);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            logger.debug("analysis JSON data failure");
+            logger.debug("JsonMappingException Message {}", e.getMessage());
+            logger.debug("{}", e);
             resultObject.setApiMessage("analysis JSON data failure");
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.debug("analysis JSON data failure");
+            logger.debug("JsonProcessingException Message {}", e.getMessage());
+            logger.debug("{}", e);
             resultObject.setApiMessage("analysis JSON data failure");
         }
 
@@ -122,6 +134,7 @@ public class CathaybkServiceImpl implements ICathaybkService {
 
         Map<String, BpiDTO> bpiMap = coinCurrencyDTORq.getBpi();
         if (bpiMap.size() == 0) {
+            logger.info("error! bpi data not found");
             resultObject.setApiMessage("error! bpi data not found");
             return resultObject;
         }
@@ -140,7 +153,6 @@ public class CathaybkServiceImpl implements ICathaybkService {
         Iterator<Map.Entry<String, BpiDTO>> mapIterator = bpiMap.entrySet().iterator();
         while (mapIterator.hasNext()) {
             Map.Entry<String, BpiDTO> entry = mapIterator.next();
-            String mapKey = entry.getKey();
             BpiDTO mapValue = entry.getValue();
 
             Bpi tempEntity = new Bpi();
@@ -151,7 +163,6 @@ public class CathaybkServiceImpl implements ICathaybkService {
             tempEntity.setDescription(mapValue.getDescription());
             tempEntity.setRateFloat(String.valueOf(mapValue.getRateFloat()));
 
-            System.out.println("bpiRepo.save(tempEntity);");
             bpiRepo.save(tempEntity);
         }
 
@@ -185,7 +196,6 @@ public class CathaybkServiceImpl implements ICathaybkService {
             long bpiFK = coinCurrencyDTORq.getCoinCurrencyPK();
             while (mapIterator.hasNext()) {
                 Map.Entry<String, BpiDTO> entry = mapIterator.next();
-                String mapKey = entry.getKey();
                 BpiDTO mapValue = entry.getValue();
 
                 Bpi tempEntity = new Bpi();
@@ -231,15 +241,19 @@ public class CathaybkServiceImpl implements ICathaybkService {
 
         // 如果查無資料就返回空的 Response model.
         if (coinCurrency == null) {
-            resultObject.setApiMessage(String.format("%d CoinCurrency-PK no data found.%n", coinCurrencyPK));
+            String errorMessage01 = String.format("%d CoinCurrency-PK no data found.%n", coinCurrencyPK);
+            logger.info(errorMessage01);
+            resultObject.setApiMessage(errorMessage01);
             return resultObject;
         }
 
         // 把ISO日期時間 轉成 指定格式日期時間.
         String ccUpdateISOTime = coinCurrency.getUpdatedISOTime();
+        logger.info("input date [{}]", ccUpdateISOTime);
         OffsetDateTime dateTime = OffsetDateTime.parse(ccUpdateISOTime);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         String outputDateTime = dateTime.format(outputFormatter);
+        logger.info("output date [{}]", outputDateTime);
 
         resultObject.setUpdateTime(outputDateTime);
 
@@ -264,7 +278,7 @@ public class CathaybkServiceImpl implements ICathaybkService {
     // 加入更新日期資訊.
     private void addUpdateTime(CoinCurrencyDTORq coinCurrencyDTORq, CoindeskRs resultObject) {
         if (coinCurrencyDTORq == null) {
-            System.out.println("error! coinCurrencyDTO is null");
+            logger.info("error! coinCurrencyDTO is null");
             return;
         }
         String inputDateTime = coinCurrencyDTORq.getTime().getUpdatedISO();
@@ -288,7 +302,7 @@ public class CathaybkServiceImpl implements ICathaybkService {
     // 加入bpi幣值資訊.
     private void addBpiData(CoinCurrencyDTORq coinCurrencyDTORq, CoindeskRs resultObject) {
         if (coinCurrencyDTORq == null) {
-            System.out.println("error! coinCurrencyDTO is null");
+            logger.info("error! coinCurrencyDTO is null");
             return;
         }
         Map<String, String> coinConstantMap = ConstantConfig.getCoinConstantMap();
