@@ -1,16 +1,21 @@
 package com.hsiangyu.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /* BPI Response model */
 /* 對應 JSON格式 傳輸資料的 model */
 public class BpiRs {
 
     /* 幣別 */
+    @JsonProperty("bpiCode")
     private String bpiCode;
 
     /* 幣別中文名稱 */
+    @JsonProperty("bpiCodeZhTW")
     private String bpiCodeZhTW;
 
     /* 匯率 */
+    @JsonProperty("rateFloat")
     private double rateFloat;
 
     public String getBpiCode() {
