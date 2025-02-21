@@ -20,6 +20,7 @@ public interface ICathaybkCoinCurrencyRepo extends JpaRepository<CoinCurrency, L
             @Param("updatedISO_time") String updatedISOTime, @Param("updateduk_time") String updatedukTime,
             @Param("disclaimer") String disclaimer, @Param("chart_name") String chartName);
 
+    /* 用來找出最新一筆新增資料的 PK值 */
     @Query(value = " SELECT coin_currency_id FROM coin_currency " + " ORDER BY coin_currency_id DESC "
             + " LIMIT 1 ", nativeQuery = true)
     public abstract long getInsertDataPK();

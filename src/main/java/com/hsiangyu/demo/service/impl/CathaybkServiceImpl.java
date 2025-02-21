@@ -70,31 +70,30 @@ public class CathaybkServiceImpl implements ICathaybkService {
             HttpEntity entity = closeableHttpResponse.getEntity();
             resultContent = EntityUtils.toString(entity);
             if (closeableHttpResponse.getCode() != 200) {
-                resultObject.setApiMessage("fetch coindesk API failure");
+                logger.debug("HTTP code != 200. fetch coindesk API failure");
+                resultObject.setApiMessage("HTTP code != 200. fetch coindesk API failure");
             }
         } catch (ParseException e) {
-            logger.debug("fetch coindesk API failure");
             logger.debug("ParseException Message {}", e.getMessage());
-            logger.debug("{}", e);
+            logger.debug("fetch coindesk API failure", e);
             resultObject.setApiMessage("fetch coindesk API failure");
         } catch (IOException e) {
-            logger.debug("fetch coindesk API failure");
             logger.debug("IOException Message {}", e.getMessage());
-            logger.debug("{}", e);
+            logger.debug("fetch coindesk API failure", e);
             resultObject.setApiMessage("fetch coindesk API failure");
         } finally {
             if (closeableHttpResponse != null) {
                 try {
                     closeableHttpResponse.close();
                 } catch (IOException e) {
-                    logger.debug("{}", e);
+                    logger.debug("IOException", e);
                 }
             }
             if (closeableHttpClient != null) {
                 try {
                     closeableHttpClient.close();
                 } catch (IOException e) {
-                    logger.debug("{}", e);
+                    logger.debug("IOException", e);
                 }
             }
         }
@@ -104,14 +103,12 @@ public class CathaybkServiceImpl implements ICathaybkService {
         try {
             coinCurrencyDTORq = objectMapper.readValue(resultContent, CoinCurrencyDTORq.class);
         } catch (JsonMappingException e) {
-            logger.debug("analysis JSON data failure");
             logger.debug("JsonMappingException Message {}", e.getMessage());
-            logger.debug("{}", e);
+            logger.debug("analysis JSON data failure", e);
             resultObject.setApiMessage("analysis JSON data failure");
         } catch (JsonProcessingException e) {
-            logger.debug("analysis JSON data failure");
             logger.debug("JsonProcessingException Message {}", e.getMessage());
-            logger.debug("{}", e);
+            logger.debug("analysis JSON data failure", e);
             resultObject.setApiMessage("analysis JSON data failure");
         }
 
