@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
 
@@ -270,6 +271,21 @@ public class CathaybkServiceImpl implements ICathaybkService {
         resultObject.setBpiRsList(bpiRsList);
 
         return resultObject;
+    }
+
+    @Override
+    public int calculateNumberSum01(int minNum, int maxNum) {
+        int sum = IntStream.rangeClosed(minNum, maxNum).sum();
+        return sum;
+    }
+
+    @Override
+    public int calculateNumberSum02(int minNum, int maxNum) {
+        int sum = 0;
+        for (int i = minNum; i <= maxNum; i++) {
+            sum = sum + i;
+        }
+        return sum;
     }
 
     // 加入更新日期資訊.

@@ -15,10 +15,16 @@ public interface ICathaybkService {
     /* 更新 */
     public abstract CoinCurrencyRs updateCoinData(CoinCurrencyDTORq coinCurrencyDTORq);
 
+    /* 查詢 */
+    public abstract CoinCurrencyRs searchCoinData(long coinCurrencyPK);
+
     /* 刪除 */
     public abstract CoinCurrencyRs deleteCoinData(long coinCurrencyPK);
 
-    /* 查詢 */
-    public abstract CoinCurrencyRs searchCoinData(long coinCurrencyPK);
+    /* 計算數字加總 */
+    public abstract int calculateNumberSum01(int minNum, int maxNum);
+
+    /* 計算數字加總 */
+    public abstract int calculateNumberSum02(int minNum, int maxNum);
 
 }

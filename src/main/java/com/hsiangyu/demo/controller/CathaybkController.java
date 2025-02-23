@@ -42,18 +42,18 @@ public class CathaybkController {
         return cathaybkService.updateCoinData(coinCurrencyRequest);
     }
 
-    /* 刪除 */
-    @PostMapping("/Cathaybk/delete/{coinCurrencyPK}")
-    public CoinCurrencyRs deleteCoinData(@PathVariable long coinCurrencyPK) {
-        logger.info("Post Cathaybk delete coinCurrencyPK={}", coinCurrencyPK);
-        return cathaybkService.deleteCoinData(coinCurrencyPK);
-    }
-
     /* 查詢 */
     @PostMapping("/Cathaybk/search/{coinCurrencyPK}")
     public CoinCurrencyRs searchCoinData(@PathVariable long coinCurrencyPK) {
         logger.info("Post Cathaybk search coinCurrencyPK={}", coinCurrencyPK);
         return cathaybkService.searchCoinData(coinCurrencyPK);
+    }
+
+    /* 刪除 */
+    @PostMapping("/Cathaybk/delete/{coinCurrencyPK}")
+    public CoinCurrencyRs deleteCoinData(@PathVariable long coinCurrencyPK) {
+        logger.info("Post Cathaybk delete coinCurrencyPK={}", coinCurrencyPK);
+        return cathaybkService.deleteCoinData(coinCurrencyPK);
     }
 
 }

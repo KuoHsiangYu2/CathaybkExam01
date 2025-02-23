@@ -3,7 +3,7 @@
 ```no-highlight
 預前準備
 
-1. 安裝 H2資料庫，並新增 demo01 database 。
+1. 安裝 H2資料庫，並新增 demo01 database 。新增 demo01Test database 。
 
 2. 新增『application.properties』檔案，
 加入資料庫連線設定，
