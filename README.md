@@ -3,13 +3,16 @@
 ```no-highlight
 預前準備
 
-1. 安裝 H2資料庫，並新增 demo01 database 。新增 demo01Test database 。
+1. 安裝 H2資料庫，新增 demo01 database ，
+新增 demo01Test database 。
 
-2. 新增『application.properties』檔案，
+
+2. 新增『src\main\resources\application.properties』檔案，
+新增『src\test\resources\application.properties』檔案，
 加入資料庫連線設定，
 參數設定可參考『application.properties.local』檔案。
 
-3. 啟動 H2資料庫，連線 demo01 database 輸入下述SQL指令 創建 資料庫表。
+3. 啟動 H2資料庫，連線 「demo01 database」 跟 「demo01Test database」 輸入下述SQL指令 創建 資料庫表。
 CREATE TABLE coin_currency(
     coin_currency_id INT NOT NULL AUTO_INCREMENT,
     updated_time VARCHAR(40),
@@ -31,3 +34,25 @@ CREATE TABLE bpi(
 );
 
 ```
+
+<br />
+create API 測試結果<br />
+
+![image](image/create_messageImage_1740839291766.jpg)
+
+<br />
+update API 測試結果<br />
+
+![image](image/update_messageImage_1740839471865.jpg)
+
+<br />
+search API 測試結果<br />
+
+![image](image/search_messageImage_1740839556913.jpg)
+
+<br />
+delete API 測試結果<br />
+
+![image](image/delete_messageImage_1740839579617.jpg)
+
+<br />
