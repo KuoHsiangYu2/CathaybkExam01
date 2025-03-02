@@ -5,3 +5,6 @@ spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.url=jdbc:h2:tcp://localhost/C:/database_h2/demo01Test
 spring.datasource.username=<測試用 資料庫帳號>
 spring.datasource.password=<測試用 資料庫密碼>
+spring.jpa.show-sql=true
+spring.jpa.format-sql=true
+spring.jpa.properties.hibernate.format_sql=true
